@@ -87,9 +87,10 @@ class Recipe(models.Model):
     c_time = models.IntegerField(verbose_name="Cooking time")
     servings = models.IntegerField(verbose_name="Servings")
 
-    def display_ingredients(self):
-        return ', '.join(str(ingredient.ingredient.name) for ingredient in self.recipeingredient_set.all())
 
+# Breaking PEP8 on purpose (because I don't know how to do a thing properly and don't have the time to figure it out.).
+    def Ingredients(self):
+        return ', '.join(str(ingredient.ingredient.name) for ingredient in self.recipeingredient_set.all())
 
     CUISINE_TAGS = (
         ("I", "Italian"), ("M", "Mexican"), ("C", "Chinese"), ("In", "Indian"), ("G", "Greek"),

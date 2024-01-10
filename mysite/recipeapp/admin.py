@@ -10,12 +10,11 @@ class RecipeIngredientInline(admin.TabularInline):
 class RecipeInstructionInline(admin.TabularInline):
     model = RecipeInstruction
     extra = 0
-    ordering = ('step_nr', "instruction")
-
+    fields = ('step_nr', "instruction")
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'c_time', 'servings', 'display_ingredients')
+    list_display = ('name', 'c_time', 'servings', 'Ingredients')
     list_filter = ['cuisine_tag', 'dietary_tag', 'meal_type_tag', 'course_tag', 'occasion_tag', 'ingredient_based_tag',
                    'flavor_tag', 'seasonal_tag', 'regional_tag', 'skill_tag', 'allergy_tag', 'special_tag',
                    'prepmeth_tag', 'trend_tag']
@@ -23,13 +22,15 @@ class RecipeAdmin(admin.ModelAdmin):
     fieldsets = (
         ('General', {'fields': ('name', 'c_time', 'servings')}),
         ('Tags', {'fields': (
-        'cuisine_tag', 'dietary_tag', 'meal_type_tag', 'course_tag', 'occasion_tag', 'ingredient_based_tag',
-        'flavor_tag', 'seasonal_tag', 'regional_tag', 'skill_tag', 'allergy_tag', 'special_tag',
-        'prepmeth_tag', 'trend_tag')})
+            'cuisine_tag', 'dietary_tag', 'meal_type_tag', 'course_tag', 'occasion_tag', 'ingredient_based_tag',
+            'flavor_tag', 'seasonal_tag', 'regional_tag', 'skill_tag', 'allergy_tag', 'special_tag',
+            'prepmeth_tag', 'trend_tag')})
     )
 
-    inlines = [RecipeIngredientInline, RecipeInstructionInline]
+    search_fields = ('name', )
+    list_editable = ('c_time', 'servings')
 
+    inlines = [RecipeIngredientInline, RecipeInstructionInline]
 
 
 class IngredientAdmin(admin.ModelAdmin):
@@ -58,7 +59,6 @@ class RecipeIngredientAdmin(admin.ModelAdmin):
 
 class RecipeInstructionAdmin(admin.ModelAdmin):
     list_display = ('step_nr', 'instruction')
-
 
 
 # Register your models here.
