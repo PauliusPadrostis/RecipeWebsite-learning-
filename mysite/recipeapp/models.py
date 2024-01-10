@@ -5,12 +5,20 @@ from django.db import models
 class StorageType(models.Model):
     name = models.CharField(verbose_name="Storage type", max_length=100)
 
+    class Meta:
+        verbose_name = 'Storage type'
+        verbose_name_plural = 'Storage types'
+
     def __str__(self):
         return f"{self.name}"
 
 
 class Category(models.Model):
     name = models.CharField(verbose_name="Category", max_length=100)
+
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
 
     def __str__(self):
         return f"{self.name}"
@@ -26,6 +34,10 @@ class NutriValues(models.Model):
     protein = models.FloatField(verbose_name="Protein")
     salt = models.FloatField(verbose_name="Salt")
 
+    class Meta:
+        verbose_name = 'Nutrient value'
+        verbose_name_plural = 'Nutrient values'
+
     def __str__(self):
         return f"{self.ing_name}"
 
@@ -37,12 +49,20 @@ class Ingredient(models.Model):
     storage_type = models.ForeignKey("StorageType", on_delete=models.SET_NULL, null=True)
     price_per_unit = models.FloatField(verbose_name="Price")
 
+    class Meta:
+        verbose_name = 'Ingredient'
+        verbose_name_plural = 'Ingredients'
+
     def __str__(self):
         return f"{self.name}"
 
 
 class MeasurementType(models.Model):
     name = models.CharField(verbose_name="Measurement", max_length=100)
+
+    class Meta:
+        verbose_name = 'Measurement type'
+        verbose_name_plural = 'Measurement types'
 
     def __str__(self):
         return f"{self.name}"
@@ -52,6 +72,11 @@ class RecipeIngredient(models.Model):
     ingredient = models.ForeignKey("Ingredient", on_delete=models.SET_NULL, null=True)
     measurement = models.ForeignKey("MeasurementType", on_delete=models.SET_NULL, null=True)
     amount = models.FloatField(verbose_name="Amount")
+    recipe = models.ForeignKey("Recipe", on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name = 'Recipe ingredient'
+        verbose_name_plural = 'Recipe ingredients'
 
     def __str__(self):
         return f"{self.ingredient}, {self.amount} {self.measurement}"
@@ -61,7 +86,10 @@ class Recipe(models.Model):
     name = models.CharField(verbose_name="Name", max_length=100)
     c_time = models.IntegerField(verbose_name="Cooking time")
     servings = models.IntegerField(verbose_name="Servings")
-    recipe_ingredients = models.ForeignKey("RecipeIngredient", on_delete=models.SET_NULL, null=True)
+
+    def display_ingredients(self):
+        return ', '.join(str(ingredient.ingredient.name) for ingredient in self.recipeingredient_set.all())
+
 
     CUISINE_TAGS = (
         ("I", "Italian"), ("M", "Mexican"), ("C", "Chinese"), ("In", "Indian"), ("G", "Greek"),
@@ -144,11 +172,19 @@ class Recipe(models.Model):
     prepmeth_tag = models.CharField(max_length=3, choices=PREPARATION_METHOD_TAGS, blank=True, default="")
     trend_tag = models.CharField(max_length=3, choices=CULINARY_TREND_TAGS, blank=True, default="")
 
+    class Meta:
+        verbose_name = 'Recipe'
+        verbose_name_plural = 'Recipes'
+
     def __str__(self):
-        return f"{self.name} | Cooking time: {self.c_time} | Serves: {self.servings}"
+        return f"{self.name}"
 
 
 class RecipeInstruction(models.Model):
     recipe = models.ForeignKey("Recipe", on_delete=models.SET_NULL, null=True)
     instruction = models.TextField(verbose_name="Instructions", max_length=1000)
     step_nr = models.IntegerField(verbose_name="Step Nr:")
+
+    class Meta:
+        verbose_name = 'Recipe instruction'
+        verbose_name_plural = 'Recipe instructions'
