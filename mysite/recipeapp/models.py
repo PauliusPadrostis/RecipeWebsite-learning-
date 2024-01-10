@@ -182,9 +182,12 @@ class Recipe(models.Model):
 
 class RecipeInstruction(models.Model):
     recipe = models.ForeignKey("Recipe", on_delete=models.SET_NULL, null=True)
-    instruction = models.TextField(verbose_name="Instructions", max_length=1000)
+    instruction = models.TextField(verbose_name="Instruction", max_length=1000, help_text="")
     step_nr = models.IntegerField(verbose_name="Step Nr:")
 
     class Meta:
         verbose_name = 'Recipe instruction'
         verbose_name_plural = 'Recipe instructions'
+
+    def __str__(self):
+        return f"{self.instruction}"

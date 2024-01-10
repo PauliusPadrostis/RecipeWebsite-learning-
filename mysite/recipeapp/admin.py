@@ -7,6 +7,13 @@ class RecipeIngredientInline(admin.TabularInline):
     extra = 0
 
 
+class RecipeInstructionInline(admin.TabularInline):
+    model = RecipeInstruction
+    extra = 0
+    ordering = ('step_nr', "instruction")
+
+
+
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('name', 'c_time', 'servings', 'display_ingredients')
     list_filter = ['cuisine_tag', 'dietary_tag', 'meal_type_tag', 'course_tag', 'occasion_tag', 'ingredient_based_tag',
@@ -21,7 +28,8 @@ class RecipeAdmin(admin.ModelAdmin):
         'prepmeth_tag', 'trend_tag')})
     )
 
-    inlines = [RecipeIngredientInline]
+    inlines = [RecipeIngredientInline, RecipeInstructionInline]
+
 
 
 class IngredientAdmin(admin.ModelAdmin):
@@ -48,6 +56,11 @@ class RecipeIngredientAdmin(admin.ModelAdmin):
     list_display = ('ingredient', 'measurement', 'amount')
 
 
+class RecipeInstructionAdmin(admin.ModelAdmin):
+    list_display = ('step_nr', 'instruction')
+
+
+
 # Register your models here.
 admin.site.register(NutriValues)
 admin.site.register(Category)
@@ -56,4 +69,4 @@ admin.site.register(StorageType)
 admin.site.register(MeasurementType)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(RecipeIngredient, RecipeIngredientAdmin)
-admin.site.register(RecipeInstruction)
+admin.site.register(RecipeInstruction, RecipeInstructionAdmin)
