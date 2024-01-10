@@ -2,6 +2,11 @@ from django.contrib import admin
 from .models import *
 
 
+class RecipeIngredientInline(admin.TabularInline):
+    model = RecipeIngredient
+    extra = 0
+
+
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('name', 'c_time', 'servings', 'display_ingredients')
     list_filter = ['cuisine_tag', 'dietary_tag', 'meal_type_tag', 'course_tag', 'occasion_tag', 'ingredient_based_tag',
@@ -10,10 +15,13 @@ class RecipeAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('General', {'fields': ('name', 'c_time', 'servings')}),
-        ('Tags', {'fields': ('cuisine_tag', 'dietary_tag', 'meal_type_tag', 'course_tag', 'occasion_tag', 'ingredient_based_tag',
-                   'flavor_tag', 'seasonal_tag', 'regional_tag', 'skill_tag', 'allergy_tag', 'special_tag',
-                   'prepmeth_tag', 'trend_tag')})
+        ('Tags', {'fields': (
+        'cuisine_tag', 'dietary_tag', 'meal_type_tag', 'course_tag', 'occasion_tag', 'ingredient_based_tag',
+        'flavor_tag', 'seasonal_tag', 'regional_tag', 'skill_tag', 'allergy_tag', 'special_tag',
+        'prepmeth_tag', 'trend_tag')})
     )
+
+    inlines = [RecipeIngredientInline]
 
 
 class IngredientAdmin(admin.ModelAdmin):
@@ -22,16 +30,22 @@ class IngredientAdmin(admin.ModelAdmin):
 
     def get_name(self, obj):
         return obj.name
+
     get_name.short_description = 'Ingredient Name'
 
     def get_category(self, obj):
         return obj.category
+
     get_category.short_description = 'Item category'
 
     def get_price(self, obj):
         return obj.price_per_unit
 
     get_price.short_description = "Price by unit (Kg/Liter)"
+
+
+class RecipeIngredientAdmin(admin.ModelAdmin):
+    list_display = ('ingredient', 'measurement', 'amount')
 
 
 # Register your models here.
@@ -41,4 +55,5 @@ admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(StorageType)
 admin.site.register(MeasurementType)
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(RecipeIngredient)
+admin.site.register(RecipeIngredient, RecipeIngredientAdmin)
+admin.site.register(RecipeInstruction)
