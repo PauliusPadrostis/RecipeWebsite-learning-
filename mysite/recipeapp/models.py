@@ -33,7 +33,7 @@ class NutriValues(models.Model):
     sugar = models.FloatField(verbose_name="Sugar")
     protein = models.FloatField(verbose_name="Protein")
     salt = models.FloatField(verbose_name="Salt")
-    brand_ingredient = models.ForeignKey("BrandIngredient", on_delete=models.SET_NULL, null=True)
+    ingredient = models.ForeignKey("Ingredient", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = 'Nutritional value'
@@ -43,15 +43,16 @@ class NutriValues(models.Model):
         return f"{self.ing_name}"
 
 
-class Product(models.Model):
+class Ingredient(models.Model):
     name = models.CharField(verbose_name="Name", max_length=100)
     category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True, blank=True)
+    brand = models.CharField(verbose_name="Brand", max_length=100, null=True,  blank=True)
+    net_weight = models.FloatField(verbose_name="Net weight (g/ml)", null=True,  blank=True)
     storage_type = models.ForeignKey("StorageType", on_delete=models.SET_NULL, null=True)
-
-
+    price_per_unit = models.FloatField(verbose_name="Price")
     class Meta:
-        verbose_name = 'Product'
-        verbose_name_plural = 'Products'
+        verbose_name = 'Ingredient'
+        verbose_name_plural = 'Ingredients'
 
     def __str__(self):
         return f"{self.name}"
@@ -68,19 +69,8 @@ class MeasurementType(models.Model):
         return f"{self.name}"
 
 
-class BrandIngredient(models.Model):
-    brand_name = models.CharField(verbose_name="Brand name", max_length=100, null=True,  blank=True)
-    product = models.ForeignKey("Product", on_delete=models.CASCADE, null=True, blank=True)
-    net_weight = models.FloatField(verbose_name="Net weight (g/ml)", null=True, blank=True)
-    price_per_unit = models.FloatField(verbose_name="Price")
-
-    def __str__(self):
-        return f"{self.brand_name}"
-
-
 class RecipeIngredient(models.Model):
-    brand_ingredients = models.ManyToManyField(to="BrandIngredient")
-    product = models.ForeignKey("Product", on_delete=models.SET_NULL, null=True)
+    ingredient = models.ForeignKey("Ingredient", on_delete=models.SET_NULL, null=True)
     measurement = models.ForeignKey("MeasurementType", on_delete=models.SET_NULL, null=True)
     amount = models.FloatField(verbose_name="Amount")
     recipe = models.ForeignKey("Recipe", on_delete=models.SET_NULL, null=True)
@@ -90,7 +80,7 @@ class RecipeIngredient(models.Model):
         verbose_name_plural = 'Recipe ingredients'
 
     def __str__(self):
-        return f"{self.product}, {self.amount} {self.measurement}"
+        return f"{self.ingredient}, {self.amount} {self.measurement}"
 
 
 class Recipe(models.Model):

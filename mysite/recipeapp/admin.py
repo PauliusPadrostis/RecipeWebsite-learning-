@@ -12,7 +12,6 @@ class RecipeInstructionInline(admin.TabularInline):
     extra = 0
     fields = ('step_nr', "instruction")
 
-
 class NutritionalValueInLine(admin.TabularInline):
     model = NutriValues
     extra = 0
@@ -38,11 +37,11 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = [RecipeIngredientInline, RecipeInstructionInline]
 
 
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ('get_name', 'get_category', 'storage_type' )
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ('get_name', 'get_category', 'brand', 'net_weight', 'storage_type', 'get_price')
     list_filter = ('category',)
 
-
+    inlines = [NutritionalValueInLine]
 
     def get_name(self, obj):
         return obj.name
@@ -54,31 +53,26 @@ class ProductAdmin(admin.ModelAdmin):
 
     get_category.short_description = 'Item category'
 
-    # def get_price(self, obj):
-    #     return obj.price_per_unit
-    #
-    # get_price.short_description = "Price by unit (Kg/Liter)"
+    def get_price(self, obj):
+        return obj.price_per_unit
+
+    get_price.short_description = "Price by unit (Kg/Liter)"
 
 
 class RecipeIngredientAdmin(admin.ModelAdmin):
-    list_display = ('product', 'measurement', 'amount')
+    list_display = ('ingredient', 'measurement', 'amount')
 
 
 class RecipeInstructionAdmin(admin.ModelAdmin):
     list_display = ('step_nr', 'instruction')
 
 
-class BrandIngredientsAdmin(admin.ModelAdmin):
-    list_display = ('product', 'brand_name', 'net_weight', 'price_per_unit')
-
-
 # Register your models here.
 admin.site.register(NutriValues)
 admin.site.register(Category)
-admin.site.register(Product, ProductAdmin)
+admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(StorageType)
 admin.site.register(MeasurementType)
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(RecipeIngredient)
-admin.site.register(RecipeInstruction)
-admin.site.register(BrandIngredient, BrandIngredientsAdmin)
+admin.site.register(RecipeIngredient, RecipeIngredientAdmin)
+admin.site.register(RecipeInstruction, RecipeInstructionAdmin)
