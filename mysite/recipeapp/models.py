@@ -33,10 +33,11 @@ class NutriValues(models.Model):
     sugar = models.FloatField(verbose_name="Sugar")
     protein = models.FloatField(verbose_name="Protein")
     salt = models.FloatField(verbose_name="Salt")
+    ingredient = models.ForeignKey("Ingredient", on_delete=models.SET_NULL, null=True)
 
     class Meta:
-        verbose_name = 'Nutrient value'
-        verbose_name_plural = 'Nutrient values'
+        verbose_name = 'Nutritional value'
+        verbose_name_plural = 'Nutritional values'
 
     def __str__(self):
         return f"{self.ing_name}"
@@ -44,8 +45,9 @@ class NutriValues(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(verbose_name="Name", max_length=100)
-    nutritional_value = models.ForeignKey("NutriValues", on_delete=models.SET_NULL, null=True)
-    category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True, blank=True)
+    brand = models.CharField(verbose_name="Brand", max_length=100, null=True,  blank=True)
+    net_weight = models.FloatField(verbose_name="Net weight (g/ml)", null=True,  blank=True)
     storage_type = models.ForeignKey("StorageType", on_delete=models.SET_NULL, null=True)
     price_per_unit = models.FloatField(verbose_name="Price")
 

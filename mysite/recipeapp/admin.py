@@ -12,6 +12,10 @@ class RecipeInstructionInline(admin.TabularInline):
     extra = 0
     fields = ('step_nr', "instruction")
 
+class NutritionalValueInLine(admin.TabularInline):
+    model = NutriValues
+    extra = 0
+
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('name', 'c_time', 'servings', 'Ingredients')
@@ -34,8 +38,10 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('get_name', 'get_category', 'storage_type', 'get_price')
+    list_display = ('get_name', 'get_category', 'brand', 'net_weight', 'storage_type', 'get_price')
     list_filter = ('category',)
+
+    inlines = [NutritionalValueInLine]
 
     def get_name(self, obj):
         return obj.name
