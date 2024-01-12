@@ -46,10 +46,11 @@ class NutriValues(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(verbose_name="Name", max_length=100)
     category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True, blank=True)
-    brand = models.CharField(verbose_name="Brand", max_length=100, null=True,  blank=True)
-    net_weight = models.FloatField(verbose_name="Net weight (g/ml)", null=True,  blank=True)
+    brand = models.CharField(verbose_name="Brand", max_length=100, null=True, blank=True)
+    net_weight = models.FloatField(verbose_name="Net weight (g/ml)", null=True, blank=True)
     storage_type = models.ForeignKey("StorageType", on_delete=models.SET_NULL, null=True)
     price_per_unit = models.FloatField(verbose_name="Price")
+
     class Meta:
         verbose_name = 'Ingredient'
         verbose_name_plural = 'Ingredients'
@@ -88,8 +89,7 @@ class Recipe(models.Model):
     c_time = models.IntegerField(verbose_name="Cooking time")
     servings = models.IntegerField(verbose_name="Servings")
 
-
-# Breaking PEP8 on purpose (because I don't know how to do a thing properly and don't have the time to figure it out.).
+    # Breaking PEP8 on purpose (because I don't know how to do a thing properly and don't have the time to figure it out.).
     def Ingredients(self):
         return ', '.join(str(ingredient.ingredient.name) for ingredient in self.recipeingredient_set.all())
 

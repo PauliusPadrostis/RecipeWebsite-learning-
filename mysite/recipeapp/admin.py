@@ -12,6 +12,7 @@ class RecipeInstructionInline(admin.TabularInline):
     extra = 0
     fields = ('step_nr', "instruction")
 
+
 class NutritionalValueInLine(admin.TabularInline):
     model = NutriValues
     extra = 0
@@ -31,7 +32,7 @@ class RecipeAdmin(admin.ModelAdmin):
             'prepmeth_tag', 'trend_tag')})
     )
 
-    search_fields = ('name', )
+    search_fields = ('name',)
     list_editable = ('c_time', 'servings')
 
     inlines = [RecipeIngredientInline, RecipeInstructionInline]
