@@ -287,6 +287,7 @@ class Recipe(models.Model):
     recipe_name = models.CharField(verbose_name="Recipe name", max_length=100, null=True, blank=True)
     cooking_time = models.FloatField(verbose_name="Cooking time")
     servings = models.FloatField(verbose_name="Servings")
+    recipe_desc = models.TextField(verbose_name="Recipe description", max_length=1000, null=True, blank=True)
 
     CUISINE_TAGS = (
         ("I", "Italian"), ("M", "Mexican"), ("C", "Chinese"), ("In", "Indian"), ("G", "Greek"),

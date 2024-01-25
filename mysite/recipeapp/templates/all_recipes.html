@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+<p>AAA</p>
+
+{% block "AllRecipes" %}
+
+{% if recipes %}
+    {% for recipe in recipes %}
+      <li>
+        <a href="{{ recipe.id }}">{{ recipe.recipe_name }}</a> ({{ recipe.servings }})
+      </li>
+    {% endfor %}
+  {% else %}
+    <p>No recipes found.</p>
+  {% endif %}
+{% endblock %}
