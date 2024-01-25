@@ -18,6 +18,9 @@
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="{% static 'style.css' %}">
 
+    {% block "CardHead" %}
+    {% endblock %}
+
 </head>
 
 <body>
@@ -106,7 +109,7 @@
                             <div class="classynav">
                                 <ul>
                                     <li class="active"><a href="index.html">Home</a></li>
-                                    <li><a href="allrecipes">All Recipes</a></li>
+                                    <li><a href="all_recipes">All Recipes</a></li>
                                     <li><a href="contact.html">Contact</a></li>
                                     <li><a href="about.html">About us</a></li>
                                 </ul>
